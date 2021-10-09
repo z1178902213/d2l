@@ -1,6 +1,10 @@
 # 自动求导，导包
 import torch
 
+##
+#这些一直不理解各个变量之间的梯度关系
+##
+
 
 # 1、简单例子
 # 介绍一些自动求导
@@ -35,8 +39,26 @@ print(x.grad == 2 * x)
 # 若y是x的函数，z是x,y的函数，若要计算z的梯度时视y为常数不做梯度计算，可以使用分离计算的技巧
 x.grad.zero_()
 y = x * x
-u = y.detach() # 相当于让y独立了
+print(y)
+u = y.detach() # 相当于让y独立了，不对y进行梯度计算
 z = u * x
-z.sum().backward()
-print(x.grad == u)
+z.sum().backward()   #########为什么要加sum()？
+print(x.grad)  # 意思应该是输出关于x的梯度
 
+
+# 4、Python控制流的梯度计算
+def f(a):
+    b = a * 2
+    while b.norm() < 1000:   # b.norm()取范数
+        b = b * 2
+    if b.sum() > 0:
+        c = b
+    else:
+        c = 100 * b
+    return c
+
+a = torch.randn(size=(), requires_grad=True) # torch.randn从均值0方差1的正态分布中获取随机数
+d = f(a)
+d.backward()
+
+print(a.grad == d / a)  ### 不理解。。。

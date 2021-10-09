@@ -20,8 +20,12 @@ for i in range(5):
 #def use_svg_display(): #@save
 #    display.set_matplotlib_formats('svg')
 # 设置matplotlib的图表大小
-def set_figsize(figsize=(7,5)): #@save
+
+def set_figsize(figsize=(3.5, 2.5)):  #@save
+    """设置matplotlib的图表大小。"""
+    #use_svg_display()
     d2l.plt.rcParams['figure.figsize'] = figsize
+
 # 设置matplotlib的轴的名称
 def set_axes(axes, xlabel, ylabel, xlim, ylim, xscale, yscale, legend): #@save
     axes.set_xlabel(xlabel)
@@ -71,18 +75,3 @@ def plot(X, Y=None, xlabel=None, ylabel=None, legend=None, xlim=None,
 # x = np.arange(0, 3, 0.1)
 # plot(x, [f(x), 2 * x - 3], 'x', 'f(x)', legend=['f(x)', 'Tangent line (x=1)'])
 # d2l.plt.show()
-
-
-# 2、略
-# 3、梯度不懂，，，
-# 4、链式法则
-
-
-# 练习
-# 1、绘制函数y=f(x)=x^3−1/x和其在x=1处切线的图像。
-def f1(x):
-    return x**3-1/x
-x = np.arange(-100,100)
-plt.plot(x, f1(x), 'ro')
-plt.plot(x, 3*x**2+1/x**2, 'bo')
-plt.show()
