@@ -45,3 +45,54 @@ rgnet(X)
 print(rgnet)
 
 print(rgnet[0][1][0].bias.data)
+
+
+def init_normal(m):
+    if type(m) == nn.Linear:
+        # 权重以均值为0，方差为1随机生成
+        nn.init.normal_(m.weight, mean=0, std=0.01)
+        nn.init.zeros_(m.bias)
+net.apply(init_normal)
+print(net[0].weight.data[0], net[0].bias.data[0])
+
+
+def init_constant(m):
+    if type(m) == nn.Linear:
+        # 将所有参数初始化为1
+        nn.init.constant_(m.weight, 1)
+        nn.init.zeros_(m.bias)
+net.apply(init_constant)
+print(net[0].weight.data[0], net[0].bias.data[0])
+
+
+# 对不同的块应用不同的初始方法
+def xavier(m):
+    if type(m) == nn.Linear:
+        nn.init.xavier_uniform_(m.weight)
+def init_42(m):
+    if type(m) == nn.Linear:
+        nn.init.constant_(m.weight, 42)
+# 用xavier方法初始化第一层
+net[0].apply(xavier)
+# 用init_42的方法初始化第三层的线性回归
+net[2].apply(init_42)
+print(net[0].weight.data[0])
+print(net[2].weight.data)
+
+# 自定义了一个参数初始化方法
+def my_init(m):
+    if type(m) == nn.Linear:
+        print("Init", *[(name, param.shape)
+                        for name, param in m.named_parameters()][0])
+        nn.init.uniform_(m.weight, -10, 10)
+        m.weight.data *= m.weight.data.abs() >= 5
+
+# ？这怎么还能把方法作为参数传入？什么牛逼操作啊？
+net.apply(my_init)
+print(net[0].weight[:2])
+
+# 直接设置参数是一直都可以的
+net[0].weight.data[:] += 1
+net[0].weight.data[0, 0] = 42
+net[0].weight.data[0]
+
