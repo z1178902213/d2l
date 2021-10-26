@@ -96,3 +96,17 @@ net[0].weight.data[:] += 1
 net[0].weight.data[0, 0] = 42
 net[0].weight.data[0]
 
+
+# 参数绑定
+# 设置了一个共享层，在网络中使用该共享层时，所有使用了所有该共享层的
+shared = nn.Linear(8, 8)
+net = nn.Sequential(nn.Linear(4, 8), nn.ReLU(),
+                    shared, nn.ReLU(),
+                    shared, nn.ReLU(),
+                    nn.Linear(8, 1))
+print(net)
+# 检查改变了参数之后，是否共享层的值不变
+print(net[2].weight.data[0] == net[4].weight.data[0])
+net[2].weight.data[0, 0] = 100
+print(net[2].weight.data[0] == net[4].weight.data[0])
+
