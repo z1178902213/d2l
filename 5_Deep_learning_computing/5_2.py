@@ -87,7 +87,7 @@ def my_init(m):
         nn.init.uniform_(m.weight, -10, 10)
         m.weight.data *= m.weight.data.abs() >= 5
 
-# ？这怎么还能把方法作为参数传入？什么牛逼操作啊？
+# ？还能把方法作为参数传入？
 net.apply(my_init)
 print(net[0].weight[:2])
 
